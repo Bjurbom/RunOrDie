@@ -50,6 +50,7 @@
     <Compile Include="Menus\BlockForMenu.cs" />
     <Compile Include="Menus\Menu.cs" />
     <Compile Include="Menus\PauseMenu\PauseMenu.cs" />
+    <Compile Include="Menus\PauseMenu\SelectorLogic.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

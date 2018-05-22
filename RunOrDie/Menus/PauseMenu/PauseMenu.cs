@@ -14,6 +14,7 @@ namespace RunOrDie.Menus.PauseMenu
 
         private SpriteFont font;
         KeyboardState newState, oldState;
+        SelectorLogic Selected;
 
         public PauseMenu(SpriteFont font)
         {
@@ -25,12 +26,15 @@ namespace RunOrDie.Menus.PauseMenu
             Blocks.Add(new BlockForMenu(new Rectangle(50, 310, 200, 70), "Quite"));
 
             selection = 0;
-           
+
+            Selected = new SelectorLogic();
 
         }
 
         public void Update()
         {
+            
+
             //uppdating the keystate
             newState = Keyboard.GetState();
 
@@ -53,6 +57,8 @@ namespace RunOrDie.Menus.PauseMenu
                 }
 
             }
+
+            Selected.Update();
 
             //inserting the keypress into the old state
             oldState = newState;

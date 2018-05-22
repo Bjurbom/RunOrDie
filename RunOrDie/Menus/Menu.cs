@@ -9,7 +9,7 @@ namespace RunOrDie.Menus
 {
     class Menu
     {
-        protected int selection;
+        protected static int selection;
         protected List<BlockForMenu> Blocks;
 
         public Menu()

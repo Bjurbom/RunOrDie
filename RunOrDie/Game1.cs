@@ -7,13 +7,16 @@ using System.Collections.Generic;
 using RunOrDie.Menus.PauseMenu;
 using MonoGame.Extended;
 
+
+
 namespace RunOrDie
 {
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-       //Gamestate Enum
-    enum Gamestate { InGame, Editing, Menu, Pause }
+    //Gamestate Enum
+
+    public enum Gamestate { InGame, Editing, Menu, Pause }
 
     public class Game1 : Game
     {
@@ -24,15 +27,17 @@ namespace RunOrDie
         SpriteFont font;
         List<Players> playerList;
         PauseMenu pause;
-        Rectangle mouseHitbox;
 
 
-        static Gamestate gameState;
+        public static Game1 self;
+        public static Gamestate gameState;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
+            self = this;
 
             //setting value of screen resolutionen
             graphics.PreferredBackBufferHeight = 900;
@@ -73,7 +78,7 @@ namespace RunOrDie
             playerSprite = Content.Load<Texture2D>("Player");
             font = Content.Load<SpriteFont>("Spritefont");
 
-            pause = new PauseMenu( font);
+            pause = new PauseMenu(font);
 
             playerList.Add(new Players(playerSprite, new ControlForPlayer(Keys.A, Keys.D, Keys.W, Keys.S), new Vector2(0f, 0f)));
         }
@@ -160,6 +165,11 @@ namespace RunOrDie
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);
+        }
+
+        public void Quit()
+        {
+             this.Exit();
         }
     }
 }
