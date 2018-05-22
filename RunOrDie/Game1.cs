@@ -5,6 +5,7 @@ using RunOrDie.Creatures;
 using System;
 using System.Collections.Generic;
 using RunOrDie.Menus.PauseMenu;
+using MonoGame.Extended;
 
 namespace RunOrDie
 {
@@ -22,7 +23,9 @@ namespace RunOrDie
         Texture2D playerSprite;
         SpriteFont font;
         List<Players> playerList;
-        
+        PauseMenu pause;
+        Rectangle mouseHitbox;
+
 
         static Gamestate gameState;
 
@@ -50,6 +53,8 @@ namespace RunOrDie
             //Setting up the camera
             cameraPlayer = new Camera(graphics.GraphicsDevice.Viewport);
 
+
+
             //set the value of gamestate
             gameState = Gamestate.InGame;
             playerList = new List<Players>();
@@ -67,6 +72,8 @@ namespace RunOrDie
             spriteBatch = new SpriteBatch(GraphicsDevice);
             playerSprite = Content.Load<Texture2D>("Player");
             font = Content.Load<SpriteFont>("Spritefont");
+
+            pause = new PauseMenu( font);
 
             playerList.Add(new Players(playerSprite, new ControlForPlayer(Keys.A, Keys.D, Keys.W, Keys.S), new Vector2(0f, 0f)));
         }
@@ -86,6 +93,12 @@ namespace RunOrDie
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            
+
+ 
+
+
+
 
             if (gameState == Gamestate.InGame)
             {
@@ -98,12 +111,13 @@ namespace RunOrDie
 
                 if (Keyboard.GetState().IsKeyDown(Keys.Y))
                 {
-                    gameState = Gamestate.Menu;
+                    gameState = Gamestate.Pause;
                 }
             }
-            else if (gameState == Gamestate.Menu)
+            else if (gameState == Gamestate.Pause)
             {
-
+                pause.Update();
+                IsMouseVisible = true;
             }
 
 
@@ -120,7 +134,7 @@ namespace RunOrDie
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            //mapping when the camera move
+            
 
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, cameraPlayer.Transform);
@@ -129,15 +143,15 @@ namespace RunOrDie
             {
                 player.Draw(spriteBatch);
             }
-
             spriteBatch.End();
 
             spriteBatch.Begin();
             if (gameState == Gamestate.Pause)
             {
-
+                pause.Draw(spriteBatch);
             }
             spriteBatch.DrawString(font, Convert.ToString(playerList[0].Position), new Vector2(0, 0), Color.Black);
+
             spriteBatch.End();
 
 

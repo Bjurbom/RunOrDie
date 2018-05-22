@@ -10,11 +10,14 @@ namespace RunOrDie.Menus
     class BlockForMenu
     {
         Rectangle rectangle;
+        private string text;
         bool isActive;
+        Color colorOfBlock;
 
-        public BlockForMenu(Rectangle rectangle)
+        public BlockForMenu(Rectangle rectangle, string text)
         {
             this.rectangle = rectangle;
+            this.text = text;
         }
 
         #region properies
@@ -35,6 +38,26 @@ namespace RunOrDie.Menus
             get
             {
                 return rectangle;
+            }
+        }
+
+        public string Text
+        {
+            get
+            {
+                return text;
+            }
+        }
+
+        public Color ColorOfBlock
+        {
+            get
+            {
+                return colorOfBlock;
+            }
+            set
+            {
+                colorOfBlock = value;
             }
         }
         #endregion

@@ -3,26 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MonoGame.Extended;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
+using MonoGame.Extended;
 namespace RunOrDie.Menus.PauseMenu
 {
     class PauseMenu : Menu
     {
-        int temp;
-        Color colorOfBlock;
 
-        public PauseMenu(int choices):base(choices)
+        private SpriteFont font;
+
+        public PauseMenu(SpriteFont font)
         {
-            temp = 0;
-             
-            for (int i = 0; i <= choices; i++)
-            {
-                Blocks[i] = new BlockForMenu(new Rectangle(50, temp, 200, 30));
-                temp += 50;
-            }
+            this.font = font;
+
+            Blocks.Add(new BlockForMenu(new Rectangle(50, 100, 200, 70), "Contiinue"));
+            Blocks.Add(new BlockForMenu(new Rectangle(50, 150, 200, 70), "Save"));
+            Blocks.Add(new BlockForMenu(new Rectangle(50, 200, 200, 70), "Load"));
+            Blocks.Add(new BlockForMenu(new Rectangle(50, 250, 200, 70), "Quite"));
+
+            Blocks[0].IsActive = true;
+
         }
 
         public void Update()
@@ -30,29 +31,29 @@ namespace RunOrDie.Menus.PauseMenu
             foreach (BlockForMenu block in Blocks)
             {
 
-
-
-
                 //color on the block if player has chosen it
                 if (block.IsActive)
                 {
-                    colorOfBlock = Color.Green;
+                    block.ColorOfBlock = Color.Green;
                 }
                 else
                 {
-                    colorOfBlock = Color.Gray;
+                    block.ColorOfBlock = Color.Gray;
                 }
+
+
             }
             
 
             
         }
 
-        public void spriteBatch(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
             foreach (BlockForMenu block in Blocks)
             {
-                spriteBatch.DrawRectangle(block.Rectangle,colorOfBlock,3f);
+                spriteBatch.DrawString(font, block.Text, new Vector2(block.Rectangle.X + 30 , block.Rectangle.Y + 20), Color.Black);
+                spriteBatch.DrawRectangle(block.Rectangle,block.ColorOfBlock,20f);
             }
 
             

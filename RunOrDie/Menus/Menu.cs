@@ -13,9 +13,10 @@ namespace RunOrDie.Menus
         protected int Selection;
         protected List<BlockForMenu> Blocks;
 
-        public Menu(int choices)
+        public Menu()
         {
-            this.choices = choices;
+            
+            Blocks = new List<BlockForMenu>();
         }
 
         
