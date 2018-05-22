@@ -47,6 +47,7 @@
     <Compile Include="Game1.cs" />
     <Compile Include="LevelEditor\PlayerPositionSaver.cs" />
     <Compile Include="LevelEditor\XMLSave.cs" />
+    <Compile Include="Menus\BlockForMenu.cs" />
     <Compile Include="Menus\Menu.cs" />
     <Compile Include="Menus\PauseMenu\PauseMenu.cs" />
     <Compile Include="Program.cs" />

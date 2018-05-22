@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using RunOrDie.Creatures;
 using System;
 using System.Collections.Generic;
+using RunOrDie.Menus.PauseMenu;
 
 namespace RunOrDie
 {
@@ -19,8 +20,9 @@ namespace RunOrDie
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Texture2D playerSprite;
-         SpriteFont font;
+        SpriteFont font;
         List<Players> playerList;
+        
 
         static Gamestate gameState;
 
@@ -121,20 +123,23 @@ namespace RunOrDie
             //mapping when the camera move
 
 
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, cameraPlayer.Transform);
-                //players draw
-                foreach (Players player in playerList)
-                {
-                    player.Draw(spriteBatch);
-                }
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, cameraPlayer.Transform);
+            //players draw
+            foreach (Players player in playerList)
+            {
+                player.Draw(spriteBatch);
+            }
 
-                spriteBatch.End();
+            spriteBatch.End();
 
-                spriteBatch.Begin();
+            spriteBatch.Begin();
+            if (gameState == Gamestate.Pause)
+            {
 
-                spriteBatch.DrawString(font, Convert.ToString(playerList[0].Position), new Vector2(0, 0), Color.Black);
-                spriteBatch.End();
-            
+            }
+            spriteBatch.DrawString(font, Convert.ToString(playerList[0].Position), new Vector2(0, 0), Color.Black);
+            spriteBatch.End();
+
 
             // TODO: Add your drawing code here
 

@@ -11,7 +11,7 @@ namespace RunOrDie.Menus
     {
         protected int choices;
         protected int Selection;
-        protected Rectangle[] rectangles;
+        protected List<BlockForMenu> Blocks;
 
         public Menu(int choices)
         {
