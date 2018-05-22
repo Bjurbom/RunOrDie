@@ -1,21 +1,35 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using RunOrDie.Creatures;
+using System.Collections.Generic;
 
 namespace RunOrDie
 {
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
+       //Gamestate Enum
+    enum Gamestate { InGame, Editing, Menu, Pause }
+
     public class Game1 : Game
     {
+        Camera cameraPlayer;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        Texture2D playerSprite;
+        List<Players> playerList;
+
+        static Gamestate gameState;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
+            //setting value of screen resolutionen
+            graphics.PreferredBackBufferHeight = 900;
+            graphics.PreferredBackBufferWidth = 1600;
         }
 
         /// <summary>
@@ -28,6 +42,14 @@ namespace RunOrDie
         {
             // TODO: Add your initialization logic here
 
+
+            //Setting up the camera
+            cameraPlayer = new Camera(graphics.GraphicsDevice.Viewport);
+
+            //set the value of gamestate
+            gameState = Gamestate.InGame;
+            playerList = new List<Players>();
+
             base.Initialize();
         }
 
@@ -39,13 +61,11 @@ namespace RunOrDie
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            playerSprite = Content.Load<Texture2D>("Player");
 
-            // TODO: use this.Content to load your game content here
+            playerList.Add(new Players(playerSprite, new ControlForPlayer(Keys.A, Keys.D, Keys.W, Keys.S), new Vector2(0f, 0f)));
         }
 
-        /// <summary>
-        /// UnloadContent will be called once per game and is the place to unload
-        /// game-specific content.
         /// </summary>
         protected override void UnloadContent()
         {
@@ -62,6 +82,18 @@ namespace RunOrDie
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            if (gameState == Gamestate.InGame)
+            {
+                //Players Update
+                foreach (Players player in playerList)
+                {
+                    player.Update(gameTime);
+                    cameraPlayer.Update(player.Center);
+                }
+
+            }
+
+
             // TODO: Add your update logic here
 
             base.Update(gameTime);
@@ -75,6 +107,14 @@ namespace RunOrDie
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, cameraPlayer.Transform);
+            //players draw
+            foreach (Players player in playerList)
+            {
+                player.Draw(spriteBatch);
+            }
+
+            spriteBatch.End();
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);
