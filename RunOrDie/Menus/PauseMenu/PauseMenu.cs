@@ -20,7 +20,7 @@ namespace RunOrDie.Menus.PauseMenu
         {
             this.font = font;
 
-            Blocks.Add(new BlockForMenu(new Rectangle(50, 100, 200, 70), "Contiinue"));
+            Blocks.Add(new BlockForMenu(new Rectangle(50, 100, 200, 70), "Continue"));
             Blocks.Add(new BlockForMenu(new Rectangle(50, 170, 200, 70), "Save"));
             Blocks.Add(new BlockForMenu(new Rectangle(50, 240, 200, 70), "Load"));
             Blocks.Add(new BlockForMenu(new Rectangle(50, 310, 200, 70), "Quite"));
