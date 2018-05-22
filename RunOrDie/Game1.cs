@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using RunOrDie.Creatures;
+using System;
 using System.Collections.Generic;
 
 namespace RunOrDie
@@ -18,6 +19,7 @@ namespace RunOrDie
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Texture2D playerSprite;
+         SpriteFont font;
         List<Players> playerList;
 
         static Gamestate gameState;
@@ -62,6 +64,7 @@ namespace RunOrDie
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             playerSprite = Content.Load<Texture2D>("Player");
+            font = Content.Load<SpriteFont>("Spritefont");
 
             playerList.Add(new Players(playerSprite, new ControlForPlayer(Keys.A, Keys.D, Keys.W, Keys.S), new Vector2(0f, 0f)));
         }
@@ -107,6 +110,7 @@ namespace RunOrDie
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
+            //mapping when the camera move
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, cameraPlayer.Transform);
             //players draw
             foreach (Players player in playerList)
@@ -114,6 +118,11 @@ namespace RunOrDie
                 player.Draw(spriteBatch);
             }
 
+            spriteBatch.End();
+
+            spriteBatch.Begin();
+
+            spriteBatch.DrawString(font, Convert.ToString(playerList[0].Position), new Vector2(0, 0), Color.Black);
             spriteBatch.End();
             // TODO: Add your drawing code here
 
