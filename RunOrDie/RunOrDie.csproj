@@ -45,6 +45,8 @@
     <Compile Include="Creatures\ControlForPlayer.cs" />
     <Compile Include="Creatures\Players.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="LevelEditor\PlayerPositionSaver.cs" />
+    <Compile Include="LevelEditor\XMLSave.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

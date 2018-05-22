@@ -94,6 +94,14 @@ namespace RunOrDie
                     cameraPlayer.Update(player.Center);
                 }
 
+                if (Keyboard.GetState().IsKeyDown(Keys.Y))
+                {
+                    gameState = Gamestate.Menu;
+                }
+            }
+            else if (gameState == Gamestate.Menu)
+            {
+
             }
 
 
@@ -111,19 +119,23 @@ namespace RunOrDie
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             //mapping when the camera move
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, cameraPlayer.Transform);
-            //players draw
-            foreach (Players player in playerList)
-            {
-                player.Draw(spriteBatch);
-            }
 
-            spriteBatch.End();
 
-            spriteBatch.Begin();
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, cameraPlayer.Transform);
+                //players draw
+                foreach (Players player in playerList)
+                {
+                    player.Draw(spriteBatch);
+                }
 
-            spriteBatch.DrawString(font, Convert.ToString(playerList[0].Position), new Vector2(0, 0), Color.Black);
-            spriteBatch.End();
+                spriteBatch.End();
+
+                spriteBatch.Begin();
+
+                spriteBatch.DrawString(font, Convert.ToString(playerList[0].Position), new Vector2(0, 0), Color.Black);
+                spriteBatch.End();
+            
+
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);
