@@ -152,6 +152,8 @@ namespace RunOrDie
             }
             spriteBatch.DrawString(font, Convert.ToString(playerList[0].Position), new Vector2(0, 0), Color.Black);
 
+            spriteBatch.DrawString(font, Convert.ToString(pause.Selector), new Vector2(0, 100), Color.Black);
+
             spriteBatch.End();
 
 

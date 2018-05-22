@@ -13,6 +13,7 @@ namespace RunOrDie.Menus
         private string text;
         bool isActive;
         Color colorOfBlock;
+        
 
         public BlockForMenu(Rectangle rectangle, string text)
         {

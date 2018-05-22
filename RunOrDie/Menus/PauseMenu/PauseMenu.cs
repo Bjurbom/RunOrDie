@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
 namespace RunOrDie.Menus.PauseMenu
 {
@@ -12,22 +13,32 @@ namespace RunOrDie.Menus.PauseMenu
     {
 
         private SpriteFont font;
+        KeyboardState newState, oldState;
 
         public PauseMenu(SpriteFont font)
         {
             this.font = font;
 
             Blocks.Add(new BlockForMenu(new Rectangle(50, 100, 200, 70), "Contiinue"));
-            Blocks.Add(new BlockForMenu(new Rectangle(50, 150, 200, 70), "Save"));
-            Blocks.Add(new BlockForMenu(new Rectangle(50, 200, 200, 70), "Load"));
-            Blocks.Add(new BlockForMenu(new Rectangle(50, 250, 200, 70), "Quite"));
+            Blocks.Add(new BlockForMenu(new Rectangle(50, 170, 200, 70), "Save"));
+            Blocks.Add(new BlockForMenu(new Rectangle(50, 240, 200, 70), "Load"));
+            Blocks.Add(new BlockForMenu(new Rectangle(50, 310, 200, 70), "Quite"));
 
-            Blocks[0].IsActive = true;
+            selection = 0;
+           
 
         }
 
         public void Update()
         {
+            //uppdating the keystate
+            newState = Keyboard.GetState();
+
+            //selectors movement and changes
+            SelectorsMovments();
+            //selectors lighting 
+            SelectorLighUp();
+
             foreach (BlockForMenu block in Blocks)
             {
 
@@ -41,12 +52,14 @@ namespace RunOrDie.Menus.PauseMenu
                     block.ColorOfBlock = Color.Gray;
                 }
 
-
             }
-            
 
-            
+            //inserting the keypress into the old state
+            oldState = newState;
+
         }
+
+
 
         public void Draw(SpriteBatch spriteBatch)
         {
@@ -59,5 +72,54 @@ namespace RunOrDie.Menus.PauseMenu
             
         }
 
+
+
+        private void SelectorsMovments()
+        {
+            //keylogic addition and subtraction
+            if (newState.IsKeyDown(Keys.W) && oldState.IsKeyUp(Keys.W))
+            {
+                if (selection >= 1)
+                {
+                    selection--;
+                }
+
+            }
+            if (newState.IsKeyDown(Keys.S) && oldState.IsKeyUp(Keys.S))
+            {
+                if ( (Blocks.Count - 1 ) >= selection)
+                {
+                    if (selection == 3)
+                    {
+
+                    }
+                    else
+                    selection++;
+                }
+
+            }
+        }
+
+        private void SelectorLighUp()
+        {
+            //could be better but it works for now
+            if (Blocks[selection].IsActive == false)
+            {
+
+                Blocks[selection].IsActive = true;
+            }
+            else
+            {
+                if (selection != 3)
+                {
+                    Blocks[selection + 1].IsActive = false;
+                }
+                if (selection != 0)
+                {
+                    Blocks[selection - 1].IsActive = false;
+                }
+
+            }
+        }
     }
 }

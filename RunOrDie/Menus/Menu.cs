@@ -9,14 +9,20 @@ namespace RunOrDie.Menus
 {
     class Menu
     {
-        protected int choices;
-        protected int Selection;
+        protected int selection;
         protected List<BlockForMenu> Blocks;
 
         public Menu()
         {
-            
             Blocks = new List<BlockForMenu>();
+        }
+
+        public int Selector
+        {
+            get
+            {
+                return selection;
+            }
         }
 
         
