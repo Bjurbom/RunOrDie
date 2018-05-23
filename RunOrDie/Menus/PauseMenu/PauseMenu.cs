@@ -7,6 +7,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
+using RunOrDie.Creatures;
+
 namespace RunOrDie.Menus.PauseMenu
 {
     class PauseMenu : Menu
@@ -31,7 +33,7 @@ namespace RunOrDie.Menus.PauseMenu
 
         }
 
-        public void Update()
+        public void Update(Players player)
         {
             
 
@@ -58,7 +60,7 @@ namespace RunOrDie.Menus.PauseMenu
 
             }
 
-            Selected.Update();
+            Selected.Update(player);
 
             //inserting the keypress into the old state
             oldState = newState;
