@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MonoGame.Extended;
 
 namespace RunOrDie.Creatures
 {
@@ -13,8 +14,9 @@ namespace RunOrDie.Creatures
     {
         private Texture2D sprite;
         private ControlForPlayer input;
-        private Vector2 position, velocity, center;
-        Rectangle rectangle;
+        private Vector2 position, velocity, center, oldmouseposition, direction;
+        float rotation;
+        CircleF circle;
 
         public Players(Texture2D sprite, ControlForPlayer input, Vector2 position)
         {
@@ -23,6 +25,7 @@ namespace RunOrDie.Creatures
             this.input = input;
             this.position = position;
         }
+
         #region properties
         public Vector2 Position
         {
@@ -43,16 +46,19 @@ namespace RunOrDie.Creatures
 
         public void Update(GameTime gameTime)
         {
-            rectangle = new Rectangle((int)position.X, (int)position.Y, 64, 64);
 
             center = new Vector2(position.X + 32f, position.Y + 32);
-            Move();
 
+            circle = new CircleF(center, 64);
+
+            Move();
+     
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(sprite, rectangle, Color.White);
+            spriteBatch.Draw(sprite, circle, Color.White);
+            spriteBatch.DrawCircle(circle, 100, Color.Black, 10f);
         }
 
         private void Move()
