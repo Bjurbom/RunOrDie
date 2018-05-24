@@ -28,10 +28,9 @@ namespace RunOrDie
         List<Players> playerList;
         PauseMenu pause;
 
-       
+
         public static Game1 self;
         public static Gamestate gameState;
-
 
         public Game1()
         {
@@ -122,7 +121,7 @@ namespace RunOrDie
             }
             else if (gameState == Gamestate.Pause)
             {
-                pause.Update(playerList[0]);
+                pause.Update();
                 IsMouseVisible = true;
             }
 

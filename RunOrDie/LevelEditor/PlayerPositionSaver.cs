@@ -19,7 +19,7 @@ namespace RunOrDie.LevelEditor
             }
             set
             {
-                position = value; 
+                position = value;
             }
         }
     }
