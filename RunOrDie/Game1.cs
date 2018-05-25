@@ -5,6 +5,8 @@ using RunOrDie.Creatures;
 using System;
 using System.Collections.Generic;
 using RunOrDie.Menus.PauseMenu;
+using RunOrDie.GameObjects.BlocksForLevel;
+using RunOrDie.GameObjects;
 using MonoGame.Extended;
 
 
@@ -26,6 +28,7 @@ namespace RunOrDie
         Texture2D playerSprite;
         SpriteFont font;
         List<Players> playerList;
+        List<StillBlocks> gameObjects;
         PauseMenu pause;
 
 
@@ -58,7 +61,7 @@ namespace RunOrDie
             //Setting up the camera
             cameraPlayer = new Camera(graphics.GraphicsDevice.Viewport);
 
-
+            gameObjects = new List<StillBlocks>();
 
             //set the value of gamestate
             gameState = Gamestate.InGame;
@@ -77,6 +80,7 @@ namespace RunOrDie
             spriteBatch = new SpriteBatch(GraphicsDevice);
             playerSprite = Content.Load<Texture2D>("Player");
             font = Content.Load<SpriteFont>("Spritefont");
+            gameObjects.Add(new StillBlocks(new Vector2(500, 500), 200));
 
             pause = new PauseMenu(font);
 
@@ -118,6 +122,11 @@ namespace RunOrDie
                 {
                     gameState = Gamestate.Pause;
                 }
+
+                foreach (StillBlocks item in gameObjects)
+                {
+                    
+                }
             }
             else if (gameState == Gamestate.Pause)
             {
@@ -148,6 +157,11 @@ namespace RunOrDie
             {
                 player.Draw(spriteBatch);
             }
+            foreach(StillBlocks blocks in gameObjects)
+            {
+                blocks.Draw(spriteBatch);
+            }
+
             spriteBatch.End();
 
             spriteBatch.Begin();

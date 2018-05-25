@@ -13,10 +13,12 @@ namespace RunOrDie.GameObjects
         protected Vector2 position;
         protected Texture2D sprite;
         protected Rectangle rectangle;
+        protected int size;
 
-        public GameObjects()
+        public GameObjects(Vector2 position, int size)
         {
-
+            this.position = position;
+            this.size = size;
         }
 
         #region Properties
@@ -38,5 +40,11 @@ namespace RunOrDie.GameObjects
         }
 
         #endregion
+
+
+        public abstract void Draw(SpriteBatch spriteBatch);
+        
+
+        
     }
 }
