@@ -116,6 +116,16 @@ namespace RunOrDie
                 {
                     player.Update(gameTime);
                     cameraPlayer.Update(player.Center);
+
+
+                    foreach (StillBlocks item in gameObjects)
+                    {
+                        if (player.Circle.ToRectangleF().Intersects(item.Rectangle))
+                        {
+                            gameState = Gamestate.Pause;
+                        }
+                    }
+
                 }
 
                 if (Keyboard.GetState().IsKeyDown(Keys.Y))
@@ -123,10 +133,6 @@ namespace RunOrDie
                     gameState = Gamestate.Pause;
                 }
 
-                foreach (StillBlocks item in gameObjects)
-                {
-                    
-                }
             }
             else if (gameState == Gamestate.Pause)
             {

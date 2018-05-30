@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MonoGame.Extended;
+using RunOrDie.GameObjects.BlocksForLevel;
 
 namespace RunOrDie.Creatures
 {
@@ -15,7 +16,7 @@ namespace RunOrDie.Creatures
         private Texture2D sprite;
         private ControlForPlayer input;
         private Vector2 position, velocity, center, oldmouseposition, direction;
-        float rotation;
+        bool moveLeft, moveRight, moveUp, moveDown;
         CircleF circle;
 
         public Players(Texture2D sprite, ControlForPlayer input, Vector2 position)
@@ -24,6 +25,11 @@ namespace RunOrDie.Creatures
 
             this.input = input;
             this.position = position;
+
+            moveDown = true;
+            moveUp = true;
+            moveRight = true;
+            moveLeft = true;
         }
 
         #region properties
@@ -42,6 +48,14 @@ namespace RunOrDie.Creatures
             }
 
         }
+        public CircleF Circle
+        {
+            get
+            {
+                return circle;
+            }
+        }
+
         #endregion
 
         public void Update(GameTime gameTime)
@@ -52,6 +66,7 @@ namespace RunOrDie.Creatures
             circle = new CircleF(center, 64);
 
             Move();
+
      
         }
 
@@ -64,30 +79,34 @@ namespace RunOrDie.Creatures
         private void Move()
         {
             //UP
-            if (Keyboard.GetState().IsKeyDown(input.Up))
+            if (Keyboard.GetState().IsKeyDown(input.Up) && moveUp)
             {
-                velocity.Y -= 1;
+                velocity.Y -= 1.5f;
             }
             //down
-            if (Keyboard.GetState().IsKeyDown(input.Down))
+            if (Keyboard.GetState().IsKeyDown(input.Down) && moveDown)
             {
-                velocity.Y += 1;
+                velocity.Y += 1.5f;
             }
             //Left
-            if (Keyboard.GetState().IsKeyDown(input.Left))
+            if (Keyboard.GetState().IsKeyDown(input.Left) && moveLeft)
             {
-                velocity.X -= 1;
+                velocity.X -= 1.5f;
             }
             //Right
-            if (Keyboard.GetState().IsKeyDown(input.Right))
+            if (Keyboard.GetState().IsKeyDown(input.Right) && moveRight)
             {
-                velocity.X += 1;
+                velocity.X += 1.5f;
             }
 
-            velocity = velocity * 0.95f;
+            velocity = velocity * 0.89f;
 
             position += velocity;
 
+        }
+        public void Intersect(Players Player, StillBlocks obj)
+        {
+            
         }
     }
 }

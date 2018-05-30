@@ -12,12 +12,12 @@ namespace RunOrDie.GameObjects.BlocksForLevel
     class StillBlocks : GameObjects
     {
 
-        Rectangle rectangle;
 
         public StillBlocks(Vector2 position, int size) : base(position, size)
         {
             rectangle = new Rectangle((int)position.X,(int)position.Y,size,size);
         }
+
 
         public override void Draw(SpriteBatch spriteBatch)
         {
