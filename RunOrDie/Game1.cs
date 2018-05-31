@@ -144,10 +144,7 @@ namespace RunOrDie
                         }
                         else
                         {
-                            player.MoveUp = true;
-                            player.MoveDown = true;
-                            player.MoveRight = true;
-                            player.MoveLeft = true;
+                            player.ResetTheBools();
                         }
                     }
 

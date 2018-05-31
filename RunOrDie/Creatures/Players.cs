@@ -19,6 +19,7 @@ namespace RunOrDie.Creatures
         private Rectangle recUp, recDown, recLeft, recRight, upperRight,upperLeft, underRight,underLeft, upperLeftUp, upperLeftLeft;
         bool moveLeft, moveRight, moveUp, moveDown;
         CircleF circle;
+        private bool upperLeftDisableUp, upperLeftDisableLeft;
 
         public Players(Texture2D sprite, ControlForPlayer input, Vector2 position)
         {
@@ -31,6 +32,8 @@ namespace RunOrDie.Creatures
             moveUp = true;
             moveRight = true;
             moveLeft = true;
+            upperLeftDisableUp = true;
+            upperLeftDisableLeft = true;
         }
 
         #region properties
@@ -111,8 +114,18 @@ namespace RunOrDie.Creatures
             recRight = new Rectangle((int)center.X, (int)center.Y - 10, 100, 10);
             recLeft = new Rectangle((int)center.X - 100, (int)center.Y - 10, 100, 10);
             upperLeft = new Rectangle((int)center.X - 30, (int)center.Y - 30, 30, 30);
-            upperLeftUp = new Rectangle(upperLeft.X+ 3, upperLeft.Y - 5, 27, 5);
-            upperLeftLeft = new Rectangle(upperLeft.X + 3, upperLeft.Y - 5, 27, 5);
+
+            if (upperLeftDisableLeft)
+            {
+                upperLeftLeft = new Rectangle(upperLeft.X - 30, upperLeft.Y + 1, 30, 5);
+            }
+           
+
+            if (upperLeftDisableUp)
+            {
+                upperLeftUp = new Rectangle(upperLeft.X + 1, upperLeft.Y - 30, 5, 30);
+            }
+            
 
 
             Move();
@@ -133,6 +146,7 @@ namespace RunOrDie.Creatures
                 spriteBatch.DrawRectangle(recRight, Color.Red);
                 spriteBatch.DrawRectangle(recLeft, Color.Red);
                 spriteBatch.DrawRectangle(upperLeft, Color.Red);
+                spriteBatch.DrawRectangle(upperLeftUp, Color.Red);
                 spriteBatch.DrawRectangle(upperLeftLeft, Color.Red);
             }
         }
@@ -227,18 +241,38 @@ namespace RunOrDie.Creatures
                 moveLeft = true;
             }
 
-            if (player.upperLeft.Intersects(block.Rectangle))
+            if (player.upperLeftUp.Intersects(block.Rectangle))
             {
-                if (player.upperLeftLeft.Intersects(block.Rectangle))
+                upperLeftDisableLeft = false;
+                if (player.upperLeft.Intersects(block.Rectangle))
                 {
-                    velocity.Y -= 1;
+                    velocity.Y += 1;
                     velocity.X += 1;
                 }
-               
             }
-          
+            if (player.upperLeftLeft.Intersects(block.Rectangle))
+            {
+                upperLeftDisableUp = false;
+                if (player.upperLeft.Intersects(block.Rectangle))
+                {
+                    velocity.Y -= 1;
+                    velocity.X -= 1;
+                }
+            }
 
 
+
+
+        }
+
+        public void ResetTheBools()
+        {
+            moveDown = true;
+            moveUp = true;
+            moveRight = true;
+            moveLeft = true;
+            upperLeftDisableUp = true;
+            upperLeftDisableLeft = true;
         }
     }
 }
