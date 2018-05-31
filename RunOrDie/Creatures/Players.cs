@@ -16,10 +16,10 @@ namespace RunOrDie.Creatures
         private Texture2D sprite;
         private ControlForPlayer input;
         private Vector2 position, velocity, center, oldmouseposition, direction;
-        private Rectangle recUp, recDown, recLeft, recRight, upperRight,upperLeft, underRight,underLeft, upperLeftUp, upperLeftLeft;
+        private Rectangle recUp, recDown, recLeft, recRight, upperRight,upperRightUp,upperRightRight,upperLeft, underRight,underRightRight,underRightDown,underLeft, upperLeftUp, upperLeftLeft, underLeftLeft,underLeftDown;
         bool moveLeft, moveRight, moveUp, moveDown;
         CircleF circle;
-        private bool upperLeftDisableUp, upperLeftDisableLeft;
+        private bool upperLeftDisableUp, upperLeftDisableLeft, upperRightDisasbleUp, upperRightDisableRight, underRightDisableRight,underRightDisableDown, underLeftDisableDown, underLeftDisableLeft;
 
         public Players(Texture2D sprite, ControlForPlayer input, Vector2 position)
         {
@@ -28,12 +28,7 @@ namespace RunOrDie.Creatures
             this.input = input;
             this.position = position;
 
-            moveDown = true;
-            moveUp = true;
-            moveRight = true;
-            moveLeft = true;
-            upperLeftDisableUp = true;
-            upperLeftDisableLeft = true;
+            ResetTheBools();
         }
 
         #region properties
@@ -113,20 +108,68 @@ namespace RunOrDie.Creatures
             recDown = new Rectangle((int)center.X - 10, (int)center.Y, 10, 100);
             recRight = new Rectangle((int)center.X, (int)center.Y - 10, 100, 10);
             recLeft = new Rectangle((int)center.X - 100, (int)center.Y - 10, 100, 10);
+
+            //hitbox for upperleft
+            #region Upperleft
             upperLeft = new Rectangle((int)center.X - 30, (int)center.Y - 30, 30, 30);
 
             if (upperLeftDisableLeft)
             {
-                upperLeftLeft = new Rectangle(upperLeft.X - 30, upperLeft.Y + 1, 30, 5);
+                upperLeftLeft = new Rectangle(upperLeft.X - 30, upperLeft.Y -5, 30, 5);
             }
            
-
+           
             if (upperLeftDisableUp)
             {
-                upperLeftUp = new Rectangle(upperLeft.X + 1, upperLeft.Y - 30, 5, 30);
+                upperLeftUp = new Rectangle(upperLeft.X - 5, upperLeft.Y - 30, 5, 30);
             }
-            
 
+            #endregion
+
+            //hitbox for upperRight
+            #region UpperRight
+            upperRight = new Rectangle((int)center.X, (int)center.Y - 30, 30, 30);
+
+            if (upperRightDisasbleUp)
+            {
+                upperRightUp = new Rectangle((int)upperRight.X + 30, (int)upperRight.Y - 30, 5, 30);
+            }
+
+            if (upperRightDisableRight)
+            {
+                upperRightRight = new Rectangle((int)upperRight.X + 30, (int)upperRight.Y - 5, 30, 5);
+            }
+            #endregion
+
+            //hitbox for underRight
+            #region underRight
+            underRight = new Rectangle((int)center.X, (int)center.Y, 30, 30);
+
+            if (underRightDisableRight)
+            {
+                underRightRight = new Rectangle((int)underRight.X + 30, (int)underRight.Y + 30, 30, 5);
+            }
+
+            if (underRightDisableDown)
+            {
+                underRightDown = new Rectangle((int)underRight.X +30 , (int)underRight.Y + 30 , 5, 30);
+            }
+            #endregion
+
+            //hitbox for underLeft
+            #region underLeft
+            underLeft = new Rectangle((int)center.X - 30, (int)center.Y, 30, 30);
+
+            if (underLeftDisableLeft)
+            {
+                underLeftLeft = new Rectangle((int)underLeft.X - 30, (int)underLeft.Y + 30, 30, 5);
+            }
+
+            if (underLeftDisableDown)
+            {
+                underLeftDown = new Rectangle((int)underLeft.X, (int)underLeft.Y + 35, 5, 30);
+            }
+            #endregion
 
             Move();
 
@@ -141,13 +184,31 @@ namespace RunOrDie.Creatures
             if(Game1.debug == Debug.True)
             {
 
+                //the whole body (sorta)
                 spriteBatch.DrawRectangle(recUp, Color.Red);
                 spriteBatch.DrawRectangle(recDown, Color.Red);
                 spriteBatch.DrawRectangle(recRight, Color.Red);
                 spriteBatch.DrawRectangle(recLeft, Color.Red);
+
+                //upperleft
                 spriteBatch.DrawRectangle(upperLeft, Color.Red);
                 spriteBatch.DrawRectangle(upperLeftUp, Color.Red);
                 spriteBatch.DrawRectangle(upperLeftLeft, Color.Red);
+
+                //upperRight
+                spriteBatch.DrawRectangle(upperRight, Color.Red);
+                spriteBatch.DrawRectangle(upperRightUp, Color.Red);
+                spriteBatch.DrawRectangle(upperRightRight, Color.Red);
+
+                //underRight
+                spriteBatch.DrawRectangle(underRight, Color.Red);
+                spriteBatch.DrawRectangle(underRightRight, Color.Red);
+                spriteBatch.DrawRectangle(underRightDown, Color.Red);
+
+                //underLeft
+                spriteBatch.DrawRectangle(underLeft, Color.Red);
+                spriteBatch.DrawRectangle(underLeftLeft, Color.Red);
+                spriteBatch.DrawRectangle(underLeftDown, Color.Red);
             }
         }
 
@@ -184,7 +245,8 @@ namespace RunOrDie.Creatures
         }
         public void Intersect(Players player, StillBlocks block)
         {
-
+            //body hitbox
+            #region Hitbox
             if (player.RecUp.Intersects(block.Rectangle))
             {
                 moveUp = false;
@@ -240,13 +302,15 @@ namespace RunOrDie.Creatures
             {
                 moveLeft = true;
             }
+            #endregion
 
+            //upper Left hitbox
+            #region upperLeft
             if (player.upperLeftUp.Intersects(block.Rectangle))
             {
                 upperLeftDisableLeft = false;
                 if (player.upperLeft.Intersects(block.Rectangle))
                 {
-                    velocity.Y += 1;
                     velocity.X += 1;
                 }
             }
@@ -255,14 +319,75 @@ namespace RunOrDie.Creatures
                 upperLeftDisableUp = false;
                 if (player.upperLeft.Intersects(block.Rectangle))
                 {
-                    velocity.Y -= 1;
+                    velocity.Y += 1;
+
+                }
+            }
+            #endregion
+
+            //upper Right hitbox
+            #region UpperRight
+            if (player.upperRightUp.Intersects(block.Rectangle))
+            {
+                upperRightDisableRight = false;
+                if (player.upperRight.Intersects(block.Rectangle))
+                {
                     velocity.X -= 1;
+                    velocity.Y -= 1;
                 }
             }
 
+            if (player.upperRightRight.Intersects(block.Rectangle))
+            {
+                upperRightDisasbleUp = false;
+                if (player.upperRight.Intersects(block.Rectangle))
+                {
+                    velocity.Y += 1;
+                }
+            }
+            #endregion
 
+            //under Right hitbox
+            #region underRight
+            if (player.underRightRight.Intersects(block.Rectangle))
+            {
+                underRightDisableDown = false;
+                if (player.underRight.Intersects(block.Rectangle))
+                {
+                    velocity.Y += 1;
+                }
+            }
 
+            if (player.underRightDown.Intersects(block.Rectangle))
+            {
+                underRightDisableRight = false;
+                if (player.underRight.Intersects(block.Rectangle))
+                {
+                    velocity.X -= 1;
+                }
+            }
+            #endregion
 
+            //under Left hibox
+            #region underLeft
+            if (player.underLeftLeft.Intersects(block.Rectangle))
+            {
+                underLeftDisableDown = false;
+                if (player.underLeft.Intersects(block.Rectangle))
+                {
+                    velocity.Y -= 1;
+                }
+            }
+
+            if (player.underLeftDown.Intersects(block.Rectangle))
+            {
+                underLeftDisableLeft = false;
+                if (player.underLeft.Intersects(block.Rectangle))
+                {
+                    velocity.X += 1;
+                }
+            }
+            #endregion
         }
 
         public void ResetTheBools()
@@ -273,6 +398,12 @@ namespace RunOrDie.Creatures
             moveLeft = true;
             upperLeftDisableUp = true;
             upperLeftDisableLeft = true;
+            upperRightDisableRight = true;
+            upperRightDisasbleUp = true;
+            underRightDisableDown = true;
+            underRightDisableRight = true;
+            underLeftDisableDown = true;
+            underLeftDisableLeft = true;
         }
     }
 }
