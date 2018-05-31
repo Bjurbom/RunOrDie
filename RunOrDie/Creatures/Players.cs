@@ -16,7 +16,7 @@ namespace RunOrDie.Creatures
         private Texture2D sprite;
         private ControlForPlayer input;
         private Vector2 position, velocity, center, oldmouseposition, direction;
-        private Rectangle recUp, recDown, recLeft, recRight;
+        private Rectangle recUp, recDown, recLeft, recRight, upperRight,upperLeft, underRight,underLeft, upperLeftUp, upperLeftLeft;
         bool moveLeft, moveRight, moveUp, moveDown;
         CircleF circle;
 
@@ -84,6 +84,13 @@ namespace RunOrDie.Creatures
                 return recLeft;
             }
         }
+        public Rectangle UpperRight
+        {
+            get
+            {
+                return upperRight;
+            }
+        }
         public bool MoveUp{ get { return moveUp; } set { moveUp = value; } }
         public bool MoveLeft { get { return moveLeft; } set { moveLeft = value; } }
         public bool MoveRight { get { return moveRight; } set { moveRight = value; } }
@@ -97,7 +104,15 @@ namespace RunOrDie.Creatures
             center = new Vector2(position.X + 32f, position.Y + 32);
             circle = new CircleF(center, 64);
 
-            recUp = new Rectangle((int)center.X - 5, (int)center.Y-100, 5, 100);
+
+            //Hitbox drawing out every update
+            recUp = new Rectangle((int)center.X - 10, (int)center.Y -100, 10, 100);
+            recDown = new Rectangle((int)center.X - 10, (int)center.Y, 10, 100);
+            recRight = new Rectangle((int)center.X, (int)center.Y - 10, 100, 10);
+            recLeft = new Rectangle((int)center.X - 100, (int)center.Y - 10, 100, 10);
+            upperLeft = new Rectangle((int)center.X - 30, (int)center.Y - 30, 30, 30);
+            upperLeftUp = new Rectangle(upperLeft.X+ 3, upperLeft.Y - 5, 27, 5);
+            upperLeftLeft = new Rectangle(upperLeft.X + 3, upperLeft.Y - 5, 27, 5);
 
 
             Move();
@@ -112,7 +127,13 @@ namespace RunOrDie.Creatures
 
             if(Game1.debug == Debug.True)
             {
+
                 spriteBatch.DrawRectangle(recUp, Color.Red);
+                spriteBatch.DrawRectangle(recDown, Color.Red);
+                spriteBatch.DrawRectangle(recRight, Color.Red);
+                spriteBatch.DrawRectangle(recLeft, Color.Red);
+                spriteBatch.DrawRectangle(upperLeft, Color.Red);
+                spriteBatch.DrawRectangle(upperLeftLeft, Color.Red);
             }
         }
 
@@ -153,13 +174,71 @@ namespace RunOrDie.Creatures
             if (player.RecUp.Intersects(block.Rectangle))
             {
                 moveUp = false;
+                if (velocity.Y <= 0f)
+                {
+                    velocity.Y = 0f;
+                }
+              
             }
             else
             {
                 moveUp = true;
             }
 
-            
+            if (player.RecDown.Intersects(block.Rectangle))
+            {
+                moveDown = false;
+                if (velocity.Y >= 0f)
+                {
+                    velocity.Y = 0f;
+                }
+
+            }
+            else
+            {
+                moveDown = true;
+            }
+
+            if (player.RecRight.Intersects(block.Rectangle))
+            {
+                moveRight = false;
+                if (velocity.X >= 0f)
+                {
+                    velocity.X = 0f;
+                }
+
+            }
+            else
+            {
+                moveRight = true;
+            }
+
+            if (player.RecLeft.Intersects(block.Rectangle))
+            {
+                moveLeft = false;
+                if (velocity.X <= 0f)
+                {
+                    velocity.X = 0f;
+                }
+
+            }
+            else
+            {
+                moveLeft = true;
+            }
+
+            if (player.upperLeft.Intersects(block.Rectangle))
+            {
+                if (player.upperLeftLeft.Intersects(block.Rectangle))
+                {
+                    velocity.Y -= 1;
+                    velocity.X += 1;
+                }
+               
+            }
+          
+
+
         }
     }
 }
