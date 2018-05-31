@@ -16,6 +16,7 @@ namespace RunOrDie.Creatures
         private Texture2D sprite;
         private ControlForPlayer input;
         private Vector2 position, velocity, center, oldmouseposition, direction;
+        private Rectangle recUp, recDown, recLeft, recRight;
         bool moveLeft, moveRight, moveUp, moveDown;
         CircleF circle;
 
@@ -55,6 +56,38 @@ namespace RunOrDie.Creatures
                 return circle;
             }
         }
+        public Rectangle RecUp
+        {
+            get
+            {
+                return recUp;
+            }
+        }
+        public Rectangle RecDown
+        {
+            get
+            {
+                return recDown;
+            }
+        }
+        public Rectangle RecRight
+        {
+            get
+            {
+                return recRight;
+            }
+        }
+        public Rectangle RecLeft
+        {
+            get
+            {
+                return recLeft;
+            }
+        }
+        public bool MoveUp{ get { return moveUp; } set { moveUp = value; } }
+        public bool MoveLeft { get { return moveLeft; } set { moveLeft = value; } }
+        public bool MoveRight { get { return moveRight; } set { moveRight = value; } }
+        public bool MoveDown { get { return moveDown; } set { moveDown = value; } }
 
         #endregion
 
@@ -62,8 +95,10 @@ namespace RunOrDie.Creatures
         {
 
             center = new Vector2(position.X + 32f, position.Y + 32);
-
             circle = new CircleF(center, 64);
+
+            recUp = new Rectangle((int)center.X - 5, (int)center.Y-100, 5, 100);
+
 
             Move();
 
@@ -74,10 +109,18 @@ namespace RunOrDie.Creatures
         {
             spriteBatch.Draw(sprite, circle, Color.White);
             spriteBatch.DrawCircle(circle, 100, Color.Black, 10f);
+
+            if(Game1.debug == Debug.True)
+            {
+                spriteBatch.DrawRectangle(recUp, Color.Red);
+            }
         }
 
         private void Move()
         {
+            
+
+
             //UP
             if (Keyboard.GetState().IsKeyDown(input.Up) && moveUp)
             {
@@ -104,8 +147,18 @@ namespace RunOrDie.Creatures
             position += velocity;
 
         }
-        public void Intersect(Players Player, StillBlocks obj)
+        public void Intersect(Players player, StillBlocks block)
         {
+
+            if (player.RecUp.Intersects(block.Rectangle))
+            {
+                moveUp = false;
+            }
+            else
+            {
+                moveUp = true;
+            }
+
             
         }
     }

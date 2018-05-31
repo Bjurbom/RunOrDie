@@ -19,6 +19,7 @@ namespace RunOrDie
     //Gamestate Enum
 
     public enum Gamestate { InGame, Editing, Menu, Pause }
+    public enum Debug { True, False}
 
     public class Game1 : Game
     {
@@ -30,8 +31,9 @@ namespace RunOrDie
         List<Players> playerList;
         List<StillBlocks> gameObjects;
         PauseMenu pause;
+        KeyboardState oldkey, newkey;
 
-
+        public static Debug debug;
         public static Game1 self;
         public static Gamestate gameState;
 
@@ -65,6 +67,9 @@ namespace RunOrDie
 
             //set the value of gamestate
             gameState = Gamestate.InGame;
+            //samma för debug
+            debug = Debug.False;
+
             playerList = new List<Players>();
 
             base.Initialize();
@@ -102,9 +107,22 @@ namespace RunOrDie
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            
 
- 
+
+            newkey = Keyboard.GetState();
+
+            //debug
+            if (newkey.IsKeyDown(Keys.H) && oldkey.IsKeyUp(Keys.H))
+            {
+                if (debug == Debug.False)
+                {
+                    debug = Debug.True;
+                }
+                else
+                {
+                    debug = Debug.False;
+                }
+            }
 
 
 
@@ -122,7 +140,11 @@ namespace RunOrDie
                     {
                         if (player.Circle.ToRectangleF().Intersects(item.Rectangle))
                         {
-                            gameState = Gamestate.Pause;
+                            player.Intersect(player, item);
+                        }
+                        else
+                        {
+                            player.MoveUp = true;
                         }
                     }
 
@@ -142,6 +164,8 @@ namespace RunOrDie
 
 
             // TODO: Add your update logic here
+
+            oldkey = newkey;
 
             base.Update(gameTime);
         }
